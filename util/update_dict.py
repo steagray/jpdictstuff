@@ -1,6 +1,6 @@
 import requests
 import gzip
-from os import remove
+import os
 
 # URL to dictionaries to download 
 # JMdict (w/ examples)
@@ -16,8 +16,13 @@ def update_dicts():
             print("Unable to get ", words[-1])
             return
 
-        open('dicts/' + words[-1], 'wb').write(req.content)
+        try:
+            open('dicts/' + words[-1], 'wb').write(req.content)
+        except FileNotFoundError:
+            os.mkdir('dicts')
+            open('dicts/' + words[-1], 'wb').write(req.content)
+
         with gzip.open('dicts/' + words[-1], 'rb') as g:
             with open('dicts/' + words[-1][:-3:1], 'wb') as f:
                 f.write(g.read())
-        remove("dicts/" + words[-1])
+        os.remove("dicts/" + words[-1])
