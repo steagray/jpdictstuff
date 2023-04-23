@@ -1,4 +1,6 @@
 from util.update_dict import update_dicts
 
-update_dicts()
-print("DONE")
+try:
+    update_dicts()
+except:
+    print("Unable to update dictionaries")
